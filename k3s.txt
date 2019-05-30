@@ -1,0 +1,940 @@
+$ curl -LO https://github.com/rancher/k3s/releases/download/v0.2.0/k3s;
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   594    0   594    0     0    855      0 --:--:-- --:--:-- --:--:--   854
+100 35.9M  100 35.9M    0     0   476k      0  0:01:17  0:01:17 --:--:-- 3270k
+$ chmod +x k3s; mv k3s /usr/local/bin/
+$ k3s --version
+k3s version dev (HEAD)
+$ k3s --help
+NAME:
+   k3s - Kubernetes, but small and simple
+
+USAGE:
+   k3s [global options] command [command options] [arguments...]
+
+VERSION:
+   dev (HEAD)
+
+COMMANDS:
+     server   Run management server
+     agent    Run node agent
+     kubectl  Run kubectl
+     crictl   Run crictl
+     help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --debug        Turn on debug logs
+   --help, -h     show help
+   --version, -v  print the version
+$ k3s server --help
+NAME:
+   k3s server - Run management server
+
+USAGE:
+   k3s server [OPTIONS]
+
+OPTIONS:
+   --https-listen-port value           HTTPS listen port (default: 6443)
+   --http-listen-port value            HTTP listen port (for /healthz, HTTPS redirect, and port for TLS terminating LB) (default: 0)
+   --data-dir value, -d value          Folder to hold state default /var/lib/rancher/k3s or ${HOME}/.rancher/k3s if not root
+   --disable-agent                     Do not run a local agent and register a local kubelet
+   --log value, -l value               Log to file
+   --cluster-cidr value                Network CIDR to use for pod IPs (default: "10.42.0.0/16")
+   --cluster-secret value              Shared secret used to bootstrap a cluster [$K3S_CLUSTER_SECRET]
+   --service-cidr value                Network CIDR to use for services IPs (default: "10.43.0.0/16")
+   --cluster-dns value                 Cluster IP for coredns service. Should be in your service-cidr range
+   --no-deploy value                   Do not deploy packaged components (valid items: coredns, servicelb, traefik)
+   --write-kubeconfig value, -o value  Write kubeconfig for admin client to this file [$K3S_KUBECONFIG_OUTPUT]
+   --write-kubeconfig-mode value       Write kubeconfig with this mode [$K3S_KUBECONFIG_MODE]
+   --node-ip value, -i value           (agent) IP address to advertise for node
+   --node-name value                   (agent) Node name [$K3S_NODE_NAME]
+   --docker                            (agent) Use docker instead of containerd
+   --no-flannel                        (agent) Disable embedded flannel
+   --container-runtime-endpoint value  (agent) Disable embedded containerd and use alternative CRI implementation
+
+$ k3s agent --help
+NAME:
+   k3s agent - Run node agent
+
+USAGE:
+   k3s agent [OPTIONS]
+
+OPTIONS:
+   --token value, -t value             Token to use for authentication [$K3S_TOKEN]
+   --token-file value                  Token file to use for authentication [$K3S_TOKEN_FILE]
+   --server value, -s value            Server to connect to [$K3S_URL]
+   --data-dir value, -d value          Folder to hold state (default: "/var/lib/rancher/k3s")
+   --cluster-secret value              Shared secret used to bootstrap a cluster [$K3S_CLUSTER_SECRET]
+   --docker                            (agent) Use docker instead of containerd
+   --no-flannel                        (agent) Disable embedded flannel
+   --node-name value                   (agent) Node name [$K3S_NODE_NAME]
+   --node-ip value, -i value           (agent) IP address to advertise for node
+   --container-runtime-endpoint value  (agent) Disable embedded containerd and use alternative CRI implementation
+
+$ k3s server &
+[1] 4585
+$ INFO[0000] Preparing data dir /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4
+INFO[2019-03-13T05:56:57.308028651Z] Starting k3s v0.2.0 (2771ae1)
+INFO[2019-03-13T05:56:58.759782642Z] Running kube-apiserver --watch-cache=false --cert-dir /var/lib/rancher/k3s/server/tls/temporary-certs --allow-privileged=true --authorization-mode Node,RBAC --service-account-signing-key-file /var/lib/rancher/k3s/server/tls/service.key --service-cluster-ip-range 10.43.0.0/16 --advertise-port 6445 --advertise-address 127.0.0.1 --insecure-port 0 --secure-port 6444 --bind-address 127.0.0.1 --tls-cert-file /var/lib/rancher/k3s/server/tls/localhost.crt --tls-private-key-file /var/lib/rancher/k3s/server/tls/localhost.key --service-account-key-file /var/lib/rancher/k3s/server/tls/service.key --service-account-issuer k3s --api-audiences unknown --basic-auth-file /var/lib/rancher/k3s/server/cred/passwd --kubelet-client-certificate /var/lib/rancher/k3s/server/tls/token-node.crt --kubelet-client-key /var/lib/rancher/k3s/server/tls/token-node.key
+INFO[2019-03-13T05:56:59.407183455Z] Running kube-scheduler --kubeconfig /var/lib/rancher/k3s/server/cred/kubeconfig-system.yaml --port 10251 --address 127.0.0.1 --secure-port 0 --leader-elect=false
+INFO[2019-03-13T05:56:59.408710280Z] Running kube-controller-manager --kubeconfig /var/lib/rancher/k3s/server/cred/kubeconfig-system.yaml --service-account-private-key-file /var/lib/rancher/k3s/server/tls/service.key --allocate-node-cidrs --cluster-cidr 10.42.0.0/16 --root-ca-file /var/lib/rancher/k3s/server/tls/token-ca.crt --port 10252 --address 127.0.0.1 --secure-port 0 --leader-elect=false
+Flag --address has been deprecated, see --bind-address instead.
+INFO[2019-03-13T05:56:59.511215609Z] Creating CRD listenerconfigs.k3s.cattle.io
+INFO[2019-03-13T05:56:59.620344902Z] Creating CRD addons.k3s.cattle.io
+INFO[2019-03-13T05:56:59.625088940Z] Creating CRD helmcharts.k3s.cattle.io
+INFO[2019-03-13T05:56:59.628004799Z] Waiting for CRD addons.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:00.129757888Z] Done waiting for CRD addons.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:00.130107988Z] Waiting for CRD helmcharts.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:00.631884726Z] Done waiting for CRD helmcharts.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:00.632176916Z] Waiting for CRD listenerconfigs.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:01.133444514Z] Done waiting for CRD listenerconfigs.k3s.cattle.io to become available
+INFO[2019-03-13T05:57:01.135934713Z] Listening on :6443
+INFO[2019-03-13T05:57:01.793444279Z] Node token is available at /var/lib/rancher/k3s/server/node-token
+INFO[2019-03-13T05:57:01.793481176Z] To join node to cluster: k3s agent -s https://172.17.0.54:6443 -t ${NODE_TOKEN}
+INFO[2019-03-13T05:57:01.798178491Z] Writing manifest: /var/lib/rancher/k3s/server/manifests/coredns.yaml
+INFO[2019-03-13T05:57:01.798262668Z] Writing manifest: /var/lib/rancher/k3s/server/manifests/traefik.yaml
+INFO[2019-03-13T05:57:01.879680907Z] Wrote kubeconfig /etc/rancher/k3s/k3s.yaml
+INFO[2019-03-13T05:57:01.879905005Z] Run: k3s kubectl
+INFO[2019-03-13T05:57:01.879941090Z] k3s is up and running
+INFO[2019-03-13T05:57:01.938939400Z] Logging containerd to /var/lib/rancher/k3s/agent/containerd/containerd.log
+INFO[2019-03-13T05:57:01.941847162Z] Running containerd -c /var/lib/rancher/k3s/agent/etc/containerd/config.toml -a /run/k3s/containerd/containerd.sock --state /run/k3s/containerd --root /var/lib/rancher/k3s/agent/containerd
+INFO[2019-03-13T05:57:01.952588104Z] Waiting for containerd startup: rpc error: code = Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial unix /run/k3s/containerd/containerd.sock: connect: no such file or directory"
+INFO[2019-03-13T05:57:02.955707476Z] Connecting to wss://localhost:6443/v1-k3s/connect
+INFO[2019-03-13T05:57:02.955745398Z] Connecting to proxy                           url="wss://localhost:6443/v1-k3s/connect"
+INFO[2019-03-13T05:57:02.962044485Z] Handling backend connection request [minikube]
+INFO[2019-03-13T05:57:02.963835126Z] Running kubelet --healthz-bind-address 127.0.0.1 --read-only-port 0 --allow-privileged=true --cluster-domain cluster.local --kubeconfig /var/lib/rancher/k3s/agent/kubeconfig.yaml --eviction-hard imagefs.available<5%,nodefs.available<5% --eviction-minimum-reclaim imagefs.available=10%,nodefs.available=10% --fail-swap-on=false --cgroup-driver cgroupfs --root-dir /var/lib/rancher/k3s/agent/kubelet --cert-dir /var/lib/rancher/k3s/agent/kubelet/pki --seccomp-profile-root /var/lib/rancher/k3s/agent/kubelet/seccomp --cni-conf-dir /var/lib/rancher/k3s/agent/etc/cni/net.d --cni-bin-dir /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin --cluster-dns 10.43.0.10 --container-runtime remote --container-runtime-endpoint unix:///run/k3s/containerd/containerd.sock --address 127.0.0.1 --anonymous-auth=false --client-ca-file /var/lib/rancher/k3s/agent/client-ca.pem --hostname-override minikube --runtime-cgroups /systemd/user.slice/user-0.slice --kubelet-cgroups /systemd/user.slice/user-0.slice
+Flag --allow-privileged has been deprecated, will be removed in a future version
+INFO[2019-03-13T05:57:02.999214608Z] waiting for node minikube: nodes "minikube" not found
+INFO[2019-03-13T05:57:05.001141836Z] waiting for node minikube CIDR not assigned yet
+INFO[2019-03-13T05:57:07.003414280Z] waiting for node minikube CIDR not assigned yet
+INFO[2019-03-13T05:57:09.005239595Z] waiting for node minikube CIDR not assigned yet
+INFO[2019-03-13T05:57:11.007768622Z] waiting for node minikube CIDR not assigned yet
+INFO[2019-03-13T05:57:13.019701049Z] waiting for node minikube CIDR not assigned yet
+
+$ k3s kubectl cluster-info
+Kubernetes master is running at https://localhost:6443
+CoreDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+$
+$ k3s kubectl version
+Client Version: version.Info{Major:"1", Minor:"13", GitVersion:"v1.13.4-k3s.1", GitCommit:"7f72ee72d6dce73e2d36dbd3402413d146fad01e", GitTreeState:"clean", BuildDate:"2019-03-04T01:05+00:00Z", GoVersion:"go1.11.4", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"13", GitVersion:"v1.13.4-k3s.1", GitCommit:"7f72ee72d6dce73e2d36dbd3402413d146fad01e", GitTreeState:"clean", BuildDate:"2019-03-04T01:05+00:00Z", GoVersion:"go1.11.4", Compiler:"gc", Platform:"linux/amd64"}
+$
+$ k3s kubectl get node -o wide
+NAME       STATUS   ROLES    AGE   VERSION         INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+minikube   Ready    <none>   30s   v1.13.4-k3s.1   172.17.0.54   <none>        Ubuntu 16.04.5 LTS   4.4.0-141-generic   containerd://1.2.4+unknown
+$
+$ k3s kubectl get pods
+No resources found.
+$ k3s kubectl get pods --all-namespaces
+NAMESPACE     NAME                            READY   STATUS      RESTARTS   AGE
+kube-system   coredns-7748f7f6df-tgn9q        1/1     Running     0          39s
+kube-system   helm-install-traefik-bk28w      0/1     Completed   0          39s
+kube-system   svclb-traefik-d86577785-xs77m   2/2     Running     0          9s
+kube-system   traefik-5866c8b546-z7xsh        0/1     Running     0          9s
+$ k3s kubectl get pods --all-namespaces
+NAMESPACE     NAME                            READY   STATUS      RESTARTS   AGE
+kube-system   coredns-7748f7f6df-tgn9q        1/1     Running     0          45s
+kube-system   helm-install-traefik-bk28w      0/1     Completed   0          45s
+kube-system   svclb-traefik-d86577785-xs77m   2/2     Running     0          15s
+kube-system   traefik-5866c8b546-z7xsh        0/1     Running     0          15s
+$ k3s kubectl get pods --all-namespaces
+NAMESPACE     NAME                            READY   STATUS      RESTARTS   AGE
+kube-system   coredns-7748f7f6df-tgn9q        1/1     Running     0          48s
+kube-system   helm-install-traefik-bk28w      0/1     Completed   0          48s
+kube-system   svclb-traefik-d86577785-xs77m   2/2     Running     0          18s
+kube-system   traefik-5866c8b546-z7xsh        0/1     Running     0          18s
+$ k3s kubectl get pods --all-namespaces
+NAMESPACE     NAME                            READY   STATUS      RESTARTS   AGE
+kube-system   coredns-7748f7f6df-tgn9q        1/1     Running     0          53s
+kube-system   helm-install-traefik-bk28w      0/1     Completed   0          53s
+kube-system   svclb-traefik-d86577785-xs77m   2/2     Running     0          23s
+kube-system   traefik-5866c8b546-z7xsh        1/1     Running     0          23s
+$
+$ alias k="k3s kubectl"
+$ k run httpd --image=httpd --replicas=2
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+deployment.apps/httpd created
+$ k get pods -o wide
+NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE       NOMINATED NODE   READINESS GATES
+httpd-5d8cbbcd67-bqzxr   0/1     ContainerCreating   0          5s    <none>   minikube   <none>           <none>
+httpd-5d8cbbcd67-mv2dx   0/1     ContainerCreating   0          5s    <none>   minikube   <none>           <none>
+$
+$ k get all --all-namespaces
+NAMESPACE     NAME                                READY   STATUS      RESTARTS   AGE
+default       pod/httpd-5d8cbbcd67-bqzxr          1/1     Running     0          17s
+default       pod/httpd-5d8cbbcd67-mv2dx          1/1     Running     0          17s
+kube-system   pod/coredns-7748f7f6df-tgn9q        1/1     Running     0          83s
+kube-system   pod/helm-install-traefik-bk28w      0/1     Completed   0          83s
+kube-system   pod/svclb-traefik-d86577785-xs77m   2/2     Running     0          53s
+kube-system   pod/traefik-5866c8b546-z7xsh        1/1     Running     0          53s
+
+NAMESPACE     NAME                 TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+default       service/kubernetes   ClusterIP      10.43.0.1      <none>        443/TCP                      97s
+kube-system   service/kube-dns     ClusterIP      10.43.0.10     <none>        53/UDP,53/TCP,9153/TCP       95s
+kube-system   service/traefik      LoadBalancer   10.43.183.53   172.17.0.54   80:31678/TCP,443:30555/TCP   53s
+
+NAMESPACE     NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+default       deployment.apps/httpd           2/2     2            2           17s
+kube-system   deployment.apps/coredns         1/1     1            1           95s
+kube-system   deployment.apps/svclb-traefik   1/1     1            1           53s
+kube-system   deployment.apps/traefik         1/1     1            1           53s
+
+NAMESPACE     NAME                                      DESIRED   CURRENT   READY   AGE
+default       replicaset.apps/httpd-5d8cbbcd67          2         2         2       17s
+kube-system   replicaset.apps/coredns-7748f7f6df        1         1         1       83s
+kube-system   replicaset.apps/svclb-traefik-d86577785   1         1         1       53s
+kube-system   replicaset.apps/traefik-5866c8b546        1         1         1       53s
+
+NAMESPACE     NAME                             COMPLETIONS   DURATION   AGE
+kube-system   job.batch/helm-install-traefik   1/1           31s        94s
+$
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+$
+$ crictl images
+FATA[0010] failed to connect: failed to connect: context deadline exceeded
+$ crictl --version
+crictl version v1.12.0
+$ k3s crictl --version
+crictl github.com/containerd/containerd unknown
+$ k3s crictl --help
+NAME:
+   crictl - client for CRI
+
+USAGE:
+   crictl [global options] command [command options] [arguments...]
+
+VERSION:
+   unknown
+
+COMMANDS:
+     attach        Attach to a running container
+     create        Create a new container
+     exec          Run a command in a running container
+     version       Display runtime version information
+     images        List images
+     inspect       Display the status of one or more containers
+     inspecti      Return the status of one or more images
+     imagefsinfo   Return image filesystem info
+     inspectp      Display the status of one or more pods
+     logs          Fetch the logs of a container
+     port-forward  Forward local port to a pod
+     ps            List containers
+     pull          Pull an image from a registry
+     runp          Run a new pod
+     rm            Remove one or more containers
+     rmi           Remove one or more images
+     rmp           Remove one or more pods
+     pods          List pods
+     start         Start one or more created containers
+     info          Display information of the container runtime
+     stop          Stop one or more running containers
+     stopp         Stop one or more running pods
+     update        Update one or more running containers
+     config        Get and set crictl options
+     stats         List container(s) resource usage statistics
+     completion    Output bash shell completion code
+     help, h       Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --config value, -c value            Location of the client config file (default: "/etc/crictl.yaml") [$CRI_CONFIG_FILE]
+   --debug, -D                         Enable debug mode
+   --image-endpoint value, -i value    Endpoint of CRI image manager service [$IMAGE_SERVICE_ENDPOINT]
+   --runtime-endpoint value, -r value  Endpoint of CRI container runtime service (default: "unix:///run/k3s/containerd/containerd.sock") [$CONTAINER_RUNTIME_ENDPOINT]
+   --timeout value, -t value           Timeout of connecting to the server (default: 10s)
+   --help, -h                          show help
+   --version, -v                       print the version
+$ k3s crictl images
+IMAGE                            TAG                 IMAGE ID            SIZE
+docker.io/coredns/coredns        1.3.0               2ee68ed074c6e       12.3MB
+docker.io/library/httpd          latest              2d1e5208483c2       49.4MB
+docker.io/library/traefik        1.7.9               98768a8bf3fed       19.9MB
+docker.io/rancher/klipper-helm   v0.1.3              97392b14ffbd1       27.1MB
+docker.io/rancher/klipper-lb     v0.1.1              4a065d8dfa588       2.71MB
+k8s.gcr.io/pause                 3.1                 da86e6ba6ca19       317kB
+$ k3s crictl ps -a
+CONTAINER ID        IMAGE               CREATED              STATE               NAME                ATTEMPT             POD ID
+ec18853c6fae6       2d1e5208483c2       About a minute ago   Running             httpd               0                   53e16f58776a8
+f00347bfc767d       2d1e5208483c2       About a minute ago   Running             httpd               0                   9fde009edc567
+ba3d75beba70a       98768a8bf3fed       About a minute ago   Running             traefik             0                   5a517db39e5b3
+2052632a1d797       4a065d8dfa588       About a minute ago   Running             https               0                   8676a54c94faa
+02811d9f5c5aa       4a065d8dfa588       About a minute ago   Running             http                0                   8676a54c94faa
+92c7c25cff7f1       2ee68ed074c6e       About a minute ago   Running             coredns             0                   d5863f8a78f21
+05590227e9e80       97392b14ffbd1       2 minutes ago        Exited              helm                0                   81af272fe3b5f
+$ k3s crictl pods
+POD ID              CREATED              STATE               NAME                            NAMESPACE           ATTEMPT
+9fde009edc567       About a minute ago   Ready               httpd-5d8cbbcd67-mv2dx          default             0
+53e16f58776a8       About a minute ago   Ready               httpd-5d8cbbcd67-bqzxr          default             0
+5a517db39e5b3       About a minute ago   Ready               traefik-5866c8b546-z7xsh        kube-system         0
+8676a54c94faa       About a minute ago   Ready               svclb-traefik-d86577785-xs77m   kube-system         0
+81af272fe3b5f       2 minutes ago        NotReady            helm-install-traefik-bk28w      kube-system         0
+d5863f8a78f21       2 minutes ago        Ready               coredns-7748f7f6df-tgn9q        kube-system         0
+$ k3s crictl stats
+CONTAINER           CPU %               MEM                 DISK                INODES
+02811d9f5c5aa       0.00                888.8kB             24.58kB             9
+2052632a1d797       0.00                835.6kB             24.58kB             9
+92c7c25cff7f1       0.18                7.295MB             45.06kB             13
+ba3d75beba70a       0.22                10.62MB             53.25kB             15
+ec18853c6fae6       0.00                5.562MB             40.96kB             12
+f00347bfc767d       0.00                5.698MB             40.96kB             12
+$ k3s crictl logs ec18853c6fae6
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.42.0.6. Set the 'ServerName' directive globally to suppress this message
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.42.0.6. Set the 'ServerName' directive globally to suppress this message
+[Wed Mar 13 05:58:24.741864 2019] [mpm_event:notice] [pid 1:tid 140605181210688] AH00489: Apache/2.4.38 (Unix) configured -- resuming normal operations
+[Wed Mar 13 05:58:24.741971 2019] [core:notice] [pid 1:tid 140605181210688] AH00094: Command line: 'httpd -D FOREGROUND'
+$ k3s crictl inspectp 9fde009edc567
+{
+  "status": {
+    "id": "9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c",
+    "metadata": {
+      "attempt": 0,
+      "name": "httpd-5d8cbbcd67-mv2dx",
+      "namespace": "default",
+      "uid": "005adf69-4555-11e9-a58f-0242ac110036"
+    },
+    "state": "SANDBOX_READY",
+    "createdAt": "2019-03-13T05:58:19.712673468Z",
+    "network": {
+      "ip": "10.42.0.7"
+    },
+    "linux": {
+      "namespaces": {
+        "options": {
+          "ipc": "POD",
+          "network": "POD",
+          "pid": "CONTAINER"
+        }
+      }
+    },
+    "labels": {
+      "io.kubernetes.pod.name": "httpd-5d8cbbcd67-mv2dx",
+      "io.kubernetes.pod.namespace": "default",
+      "io.kubernetes.pod.uid": "005adf69-4555-11e9-a58f-0242ac110036",
+      "pod-template-hash": "5d8cbbcd67",
+      "run": "httpd"
+    },
+    "annotations": {
+      "kubernetes.io/config.seen": "2019-03-13T05:58:19.326752782Z",
+      "kubernetes.io/config.source": "api"
+    }
+  },
+  "info": {
+    "pid": 6388,
+    "processStatus": "running",
+    "netNamespaceClosed": false,
+    "image": "sha256:da86e6ba6ca197bf6bc5e9d900febd906b133eaa4750e6bed647b0fbe50ed43e",
+    "snapshotKey": "9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c",
+    "snapshotter": "overlayfs",
+    "runtimeHandler": "",
+    "runtimeType": "io.containerd.runtime.v1.linux",
+    "runtimeOptions": {},
+    "config": {
+      "metadata": {
+        "name": "httpd-5d8cbbcd67-mv2dx",
+        "uid": "005adf69-4555-11e9-a58f-0242ac110036",
+        "namespace": "default"
+      },
+      "hostname": "httpd-5d8cbbcd67-mv2dx",
+      "log_directory": "/var/log/pods/005adf69-4555-11e9-a58f-0242ac110036",
+      "dns_config": {
+        "servers": [
+          "10.43.0.10"
+        ],
+        "searches": [
+          "default.svc.cluster.local",
+          "svc.cluster.local",
+          "cluster.local"
+        ],
+        "options": [
+          "ndots:5"
+        ]
+      },
+      "labels": {
+        "io.kubernetes.pod.name": "httpd-5d8cbbcd67-mv2dx",
+        "io.kubernetes.pod.namespace": "default",
+        "io.kubernetes.pod.uid": "005adf69-4555-11e9-a58f-0242ac110036",
+        "pod-template-hash": "5d8cbbcd67",
+        "run": "httpd"
+      },
+      "annotations": {
+        "kubernetes.io/config.seen": "2019-03-13T05:58:19.326752782Z",
+        "kubernetes.io/config.source": "api"
+      },
+      "linux": {
+        "cgroup_parent": "/kubepods/besteffort/pod005adf69-4555-11e9-a58f-0242ac110036",
+        "security_context": {
+          "namespace_options": {
+            "pid": 1
+          }
+        }
+      }
+    },
+    "runtimeSpec": {
+      "ociVersion": "1.0.1-dev",
+      "process": {
+        "user": {
+          "uid": 0,
+          "gid": 0
+        },
+        "args": [
+          "/pause"
+        ],
+        "env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "cwd": "/",
+        "capabilities": {
+          "bounding": [
+            "CAP_CHOWN",
+            "CAP_DAC_OVERRIDE",
+            "CAP_FSETID",
+            "CAP_FOWNER",
+            "CAP_MKNOD",
+            "CAP_NET_RAW",
+            "CAP_SETGID",
+            "CAP_SETUID",
+            "CAP_SETFCAP",
+            "CAP_SETPCAP",
+            "CAP_NET_BIND_SERVICE",
+            "CAP_SYS_CHROOT",
+            "CAP_KILL",
+            "CAP_AUDIT_WRITE"
+          ],
+          "effective": [
+            "CAP_CHOWN",
+            "CAP_DAC_OVERRIDE",
+            "CAP_FSETID",
+            "CAP_FOWNER",
+            "CAP_MKNOD",
+            "CAP_NET_RAW",
+            "CAP_SETGID",
+            "CAP_SETUID",
+            "CAP_SETFCAP",
+            "CAP_SETPCAP",
+            "CAP_NET_BIND_SERVICE",
+            "CAP_SYS_CHROOT",
+            "CAP_KILL",
+            "CAP_AUDIT_WRITE"
+          ],
+          "inheritable": [
+            "CAP_CHOWN",
+            "CAP_DAC_OVERRIDE",
+            "CAP_FSETID",
+            "CAP_FOWNER",
+            "CAP_MKNOD",
+            "CAP_NET_RAW",
+            "CAP_SETGID",
+            "CAP_SETUID",
+            "CAP_SETFCAP",
+            "CAP_SETPCAP",
+            "CAP_NET_BIND_SERVICE",
+            "CAP_SYS_CHROOT",
+            "CAP_KILL",
+            "CAP_AUDIT_WRITE"
+          ],
+          "permitted": [
+            "CAP_CHOWN",
+            "CAP_DAC_OVERRIDE",
+            "CAP_FSETID",
+            "CAP_FOWNER",
+            "CAP_MKNOD",
+            "CAP_NET_RAW",
+            "CAP_SETGID",
+            "CAP_SETUID",
+            "CAP_SETFCAP",
+            "CAP_SETPCAP",
+            "CAP_NET_BIND_SERVICE",
+            "CAP_SYS_CHROOT",
+            "CAP_KILL",
+            "CAP_AUDIT_WRITE"
+          ]
+        },
+        "noNewPrivileges": true,
+        "oomScoreAdj": -998
+      },
+      "root": {
+        "path": "rootfs",
+        "readonly": true
+      },
+      "hostname": "httpd-5d8cbbcd67-mv2dx",
+      "mounts": [
+        {
+          "destination": "/proc",
+          "type": "proc",
+          "source": "proc",
+          "options": [
+            "nosuid",
+            "noexec",
+            "nodev"
+          ]
+        },
+        {
+          "destination": "/dev",
+          "type": "tmpfs",
+          "source": "tmpfs",
+          "options": [
+            "nosuid",
+            "strictatime",
+            "mode=755",
+            "size=65536k"
+          ]
+        },
+        {
+          "destination": "/dev/pts",
+          "type": "devpts",
+          "source": "devpts",
+          "options": [
+            "nosuid",
+            "noexec",
+            "newinstance",
+            "ptmxmode=0666",
+            "mode=0620",
+            "gid=5"
+          ]
+        },
+        {
+          "destination": "/dev/shm",
+          "type": "tmpfs",
+          "source": "shm",
+          "options": [
+            "nosuid",
+            "noexec",
+            "nodev",
+            "mode=1777",
+            "size=65536k"
+          ]
+        },
+        {
+          "destination": "/dev/mqueue",
+          "type": "mqueue",
+          "source": "mqueue",
+          "options": [
+            "nosuid",
+            "noexec",
+            "nodev"
+          ]
+        },
+        {
+          "destination": "/sys",
+          "type": "sysfs",
+          "source": "sysfs",
+          "options": [
+            "nosuid",
+            "noexec",
+            "nodev",
+            "ro"
+          ]
+        },
+        {
+          "destination": "/dev/shm",
+          "type": "bind",
+          "source": "/run/k3s/containerd/io.containerd.grpc.v1.cri/sandboxes/9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c/shm",
+          "options": [
+            "rbind",
+            "ro"
+          ]
+        }
+      ],
+      "annotations": {
+        "io.kubernetes.cri.container-type": "sandbox",
+        "io.kubernetes.cri.sandbox-id": "9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c"
+      },
+      "linux": {
+        "resources": {
+          "devices": [
+            {
+              "allow": false,
+              "access": "rwm"
+            }
+          ],
+          "cpu": {
+            "shares": 2
+          }
+        },
+        "cgroupsPath": "/kubepods/besteffort/pod005adf69-4555-11e9-a58f-0242ac110036/9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c",
+        "namespaces": [
+          {
+            "type": "pid"
+          },
+          {
+            "type": "ipc"
+          },
+          {
+            "type": "uts"
+          },
+          {
+            "type": "mount"
+          },
+          {
+            "type": "network",
+            "path": "/var/run/netns/cni-46ec0722-3350-4320-a866-6c79703da2c8"
+          }
+        ],
+        "maskedPaths": [
+          "/proc/acpi",
+          "/proc/asound",
+          "/proc/kcore",
+          "/proc/keys",
+          "/proc/latency_stats",
+          "/proc/timer_list",
+          "/proc/timer_stats",
+          "/proc/sched_debug",
+          "/sys/firmware",
+          "/proc/scsi"
+        ],
+        "readonlyPaths": [
+          "/proc/bus",
+          "/proc/fs",
+          "/proc/irq",
+          "/proc/sys",
+          "/proc/sysrq-trigger"
+        ]
+      }
+    }
+  }
+}
+$
+$ k3s crictl info
+{
+  "status": {
+    "conditions": [
+      {
+        "type": "RuntimeReady",
+        "status": true,
+        "reason": "",
+        "message": ""
+      },
+      {
+        "type": "NetworkReady",
+        "status": true,
+        "reason": "",
+        "message": ""
+      }
+    ]
+  },
+  "config": {
+    "containerd": {
+      "snapshotter": "overlayfs",
+      "defaultRuntime": {
+        "runtimeType": "io.containerd.runtime.v1.linux",
+        "runtimeEngine": "",
+        "runtimeRoot": "",
+        "options": null
+      },
+      "untrustedWorkloadRuntime": {
+        "runtimeType": "",
+        "runtimeEngine": "",
+        "runtimeRoot": "",
+        "options": null
+      },
+      "runtimes": null,
+      "noPivot": false
+    },
+    "cni": {
+      "binDir": "/var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin",
+      "confDir": "/var/lib/rancher/k3s/agent/etc/cni/net.d",
+      "confTemplate": ""
+    },
+    "registry": {
+      "mirrors": {
+        "docker.io": {
+          "endpoint": [
+            "https://registry-1.docker.io"
+          ]
+        }
+      },
+      "auths": null
+    },
+    "streamServerAddress": "minikube",
+    "streamServerPort": "10010",
+    "enableSelinux": false,
+    "sandboxImage": "k8s.gcr.io/pause:3.1",
+    "statsCollectPeriod": 10,
+    "systemdCgroup": false,
+    "enableTLSStreaming": false,
+    "x509KeyPairStreaming": {
+      "tlsCertFile": "",
+      "tlsKeyFile": ""
+    },
+    "maxContainerLogSize": 16384,
+    "containerdRootDir": "/var/lib/rancher/k3s/agent/containerd",
+    "containerdEndpoint": "/run/k3s/containerd/containerd.sock",
+    "rootDir": "/var/lib/rancher/k3s/agent/containerd/io.containerd.grpc.v1.cri",
+    "stateDir": "/run/k3s/containerd/io.containerd.grpc.v1.cri"
+  },
+  "golang": "go1.11.4"
+}
+$
+$ ll /etc/rancher/k3s/
+total 12
+drwxr-xr-x 2 root root 4096 Mar 13 05:57 ./
+drwxr-xr-x 3 root root 4096 Mar 13 05:57 ../
+-rw-r--r-- 1 root root 1764 Mar 13 05:57 k3s.yaml
+$ cat /etc/rancher/k3s/k3s.yaml
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1RENDQWN5Z0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFqTVJBd0RnWURWUVFLRXdkck0zTXQKYjNKbk1ROHdEUVlEVlFRREV3WnJNM010WTJFd0hoY05NVGt3TXpFek1EVTFOekF4V2hjTk1qa3dNekV3TURVMQpOekF4V2pBak1SQXdEZ1lEVlFRS0V3ZHJNM010YjNKbk1ROHdEUVlEVlFRREV3WnJNM010WTJFd2dnRWlNQTBHCkNTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDK3NpY3lSNWhYRWFOLzNFMFZlczMrMnBhdFZvQzQKankwSTdWUk0wd1lvc2ExaVd6NTZLNVluNkVUendKUnFpWVQ2MWdKYXd4L3g1cThvNzB1VzlxOC9XMnRuWUtTeApXUVVLOXlLd3RYSGhDelZxS0hpbHVDRVBFYytkc01hT0FmLzI4bzE2SXZWTFR3aDJEZGZ3clBqUmtnaWZlV2xaCk1HMU9HVHJiamVycnYxS1VTbnRxRkdBS0ovbVZzQkVqbmtkZDdMSVV6eG1WM2ZGQ0tHVXVVNlRCRDN0bHo4S3kKYy9kZUpRc2VxSFR1V2dnNkdINkl6NDdoc055WDBNR0p0VlpEczhrcUl3ZVlxOFZKMURsZHcwNUttb1J3cWFoUApJYWVWT2NnQU4xU3FrN2VGbzdiSG5PU2d6U0c0dFB0VWsrZ3NUMFVZTFl1dHpWYTBBc0tuekk1UEFnTUJBQUdqCkl6QWhNQTRHQTFVZER3RUIvd1FFQXdJQ3BEQVBCZ05WSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUIKQ3dVQUE0SUJBUUNaUkl3NS9ObGNDbGxiMDhjUzF5VUo4WFd4ZWtybTZuY3ZsNkJBbzk2dnduc3V5NXZ0UU1YTAo1eU5KZFZCUXFsU1RRR2d1UjlaUzNOTDRYOE02ZG8wY2owRlIxRFc1T29MKzFSMnhPUXpSZmVkb3MzSVQreC9aCjdNOGNETjdEZGZwUzhaaHR0MkdwenVIbStURTlXNkxkNGhKbEl0QzZkK0NGYkNVTnNvdk9qUkhvTTNQSGdXOFEKSjVpOTZHZWtpSFdnRTQ3OHR1Rm1LeVpoUTJENTlCVCs0UHp1MGYwRitWYzFOVGU5MXZiZElSK0NUUlFHMnFTcQp5bnh2N3lxV3ExYm5FelYzZjNLdzRmenBqSnc2RXVsb0ZHeG9sQUlZOG5KdzJyOWdjMTRvQzViOSs5NjNOSEdJCld4aXJsNlBrS3Q2V1B5VW9QRHMwak5aTU9hOFdNcTVwCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://localhost:6443
+  name: default
+contexts:
+- context:
+    cluster: default
+    user: default
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+users:
+- name: default
+  user:
+    password: f6068c663b5cb5950f1e9683326b53bb
+    username: admin
+$
+$ ll /run/k3s/containerd/
+total 0
+drwx--x--x 5 root root 120 Mar 13 05:57 ./
+drwx--x--x 3 root root  60 Mar 13 05:57 ../
+srw-rw---- 1 root root   0 Mar 13 05:57 containerd.sock=
+drwxr-xr-x 4 root root  80 Mar 13 05:57 io.containerd.grpc.v1.cri/
+drwx--x--x 3 root root  60 Mar 13 05:57 io.containerd.runtime.v1.linux/
+drwx--x--x 2 root root  40 Mar 13 05:57 io.containerd.runtime.v2.task/
+$
+$ ll /var/lib/rancher/k3s/data/
+total 12
+drwxr-xr-x 3 root root 4096 Mar 13 05:56 ./
+drwxr-xr-x 5 root root 4096 Mar 13 05:57 ../
+drwxr-xr-x 3 root root 4096 Mar 13 05:56 e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/
+$ ll /var/lib/rancher/k3s/agent/
+total 28
+drwx------  5 root root 4096 Mar 13 05:57 ./
+drwxr-xr-x  5 root root 4096 Mar 13 05:57 ../
+-rw-------  1 root root 1062 Mar 13 05:57 client-ca.pem
+drwx------ 12 root root 4096 Mar 13 05:57 containerd/
+drwxr-xr-x  5 root root 4096 Mar 13 05:57 etc/
+-rw-------  1 root root 1763 Mar 13 05:57 kubeconfig.yaml
+drwxr-xr-x  7 root root 4096 Mar 13 05:57 kubelet/
+$ ll /var/lib/rancher/k3s/server/
+total 28
+drwx------ 6 root root 4096 Mar 13 05:57 ./
+drwxr-xr-x 5 root root 4096 Mar 13 05:57 ../
+drwx------ 2 root root 4096 Mar 13 05:56 cred/
+drwx------ 2 root root 4096 Mar 13 05:56 db/
+drwx------ 2 root root 4096 Mar 13 05:57 manifests/
+-rw------- 1 root root  107 Mar 13 05:57 node-token
+drwx------ 3 root root 4096 Mar 13 05:56 tls/
+$ cat /var/lib/rancher/k3s/server/node-token
+K1012a428a2128ff374062681b87006345035b0f64eaa4148469e3aecdbb28309ff::node:75f6a5b38e667bba47180e9f76c7bc65
+$ cat /var/lib/rancher/k3s/server/cred/kubeconfig-system.yaml
+apiVersion: v1
+clusters:
+- cluster:
+    server: https://localhost:6444
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMxakNDQWI2Z0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFjTVJvd0dBWURWUVFEREJGck0zTXQKWTJGQU1UVTFNalExTmpZeE56QWVGdzB4T1RBek1UTXdOVFUyTlRkYUZ3MHlPVEF6TVRBd05UVTJOVGRhTUJ3eApHakFZQmdOVkJBTU1FV3N6Y3kxallVQXhOVFV5TkRVMk5qRTNNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DCkFROEFNSUlCQ2dLQ0FRRUF3UkZHczZWcWFtOVJyUEFDZmpQL2s2aHJIeDU0bnFWVEkxTjFaK0NNMmFEV2NqeEQKSnErbHY0OGNlSDdIOEE4M3AzSHBtcFhJa0tlSmJpaU01Q2JxWTJXcCsrR1IwZlBNL0VJZVV3VTdwRm5FNWpGSgpKdkVSb0p6dEY4SUk5RSt6a2gyMkFFeVh6Q1NBUVRrYUh6eiszbVI0WFpuUHp1dkl0dzR3Q1ZJRmV5US9sdlJvCnNTWVNCaUIyR2pHb3lWWjE4c3F0aGk5OXJ3akdza24rbi9zTHpLL0ZzcVZqME5yZHJ4RlZzLzhQMVZ5ODY4REkKZE9iV01pMzJOY3lsZXl1clJWaGRiQWlEVlJqcWJnMTI0UkRjemI3cWxnRFN6bHJVL2tHQXFZc0lnTEFpQWVDWgpCZkhUeUJ2L09JMzMzaVUwWHFTRGhHM2ZsMDc3Mkw1SmZ1c2xNUUlEQVFBQm95TXdJVEFPQmdOVkhROEJBZjhFCkJBTUNBcVF3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBQ1ZUL1NCcHAKVjI4YXE1NnF6V0h0MFR4dnlxdEtQRGxOaW5tWm1SZDJoQUFUWnhlM0cxK0NQVVlwTXJMd1lackRRTlFaSmY0SAo5UnVEcENtbFZEY04rMklBdmlXMkhFR2VVK3BoNDZ0M1FhUkNneFVvUUc5V01OMDNEUnZBNTlnUk9YNjNrQWl3Ckh0blIrdm9BVFUwL2tVcG1TenFvTGZaZVh2Um1zNm41VTcyb2o3NTVjcnI5QjFpdmpOS0M3c0UvcWlpeDJ6ZUgKV1RYWG0rLzVmWHVLUjNBUFZwUGtjY2M0R3pweTFUbm9yWlV0azdGVXNkdnlEZkpNSVFRTVlxcktvdXo2andNYgpOWHVuVkdzSXpLVFV0bFVTNWlHN3FWUUJraDNseUJjSTRRODZJZ0NUcXN2NFF4RkNSK3NWWHdTQkYxZFFUbllyCjJOTFRzUVRkSkQ1a3R3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  name: local
+contexts:
+- context:
+    cluster: local
+    namespace: default
+    user: user
+  name: Default
+current-context: Default
+kind: Config
+preferences: {}
+users:
+- name: user
+  user:
+    username: system
+    password: 4b4ea0e54d57223c9b77b66ce9e40cb0
+$
+$ tree -ahCf --du /var/lib/rancher/k3s/ >> tree.info
+$ ps -efww f
+UID        PID  PPID  C STIME TTY      STAT   TIME CMD
+root         2     0  0 05:43 ?        S      0:00 [kthreadd]
+root         3     2  0 05:43 ?        S      0:00  \_ [ksoftirqd/0]
+root         5     2  0 05:43 ?        S<     0:00  \_ [kworker/0:0H]
+root         7     2  0 05:43 ?        S      0:00  \_ [rcu_sched]
+root         8     2  0 05:43 ?        S      0:00  \_ [rcu_bh]
+root         9     2  0 05:43 ?        S      0:00  \_ [migration/0]
+root        10     2  0 05:43 ?        S      0:00  \_ [watchdog/0]
+root        11     2  0 05:43 ?        S      0:00  \_ [watchdog/1]
+root        12     2  0 05:43 ?        S      0:00  \_ [migration/1]
+root        13     2  0 05:43 ?        S      0:00  \_ [ksoftirqd/1]
+root        14     2  0 05:43 ?        S      0:00  \_ [kworker/1:0]
+root        15     2  0 05:43 ?        S<     0:00  \_ [kworker/1:0H]
+root        16     2  0 05:43 ?        S      0:00  \_ [kdevtmpfs]
+root        17     2  0 05:43 ?        S<     0:00  \_ [netns]
+root        18     2  0 05:43 ?        S<     0:00  \_ [perf]
+root        19     2  0 05:43 ?        S      0:00  \_ [khungtaskd]
+root        20     2  0 05:43 ?        S<     0:00  \_ [writeback]
+root        21     2  0 05:43 ?        SN     0:00  \_ [ksmd]
+root        22     2  0 05:43 ?        SN     0:00  \_ [khugepaged]
+root        23     2  0 05:43 ?        S<     0:00  \_ [crypto]
+root        24     2  0 05:43 ?        S<     0:00  \_ [kintegrityd]
+root        25     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        26     2  0 05:43 ?        S<     0:00  \_ [kblockd]
+root        27     2  0 05:43 ?        S<     0:00  \_ [ata_sff]
+root        28     2  0 05:43 ?        S<     0:00  \_ [md]
+root        29     2  0 05:43 ?        S<     0:00  \_ [devfreq_wq]
+root        34     2  0 05:43 ?        S      0:00  \_ [kswapd0]
+root        35     2  0 05:43 ?        S<     0:00  \_ [vmstat]
+root        36     2  0 05:43 ?        S      0:00  \_ [fsnotify_mark]
+root        37     2  0 05:43 ?        S      0:00  \_ [ecryptfs-kthrea]
+root        53     2  0 05:43 ?        S<     0:00  \_ [kthrotld]
+root        54     2  0 05:43 ?        S<     0:00  \_ [acpi_thermal_pm]
+root        55     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        56     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        57     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        58     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        59     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        60     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        61     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        62     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        63     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root        64     2  0 05:43 ?        S      0:00  \_ [scsi_eh_0]
+root        65     2  0 05:43 ?        S<     0:00  \_ [scsi_tmf_0]
+root        66     2  0 05:43 ?        S      0:00  \_ [scsi_eh_1]
+root        67     2  0 05:43 ?        S<     0:00  \_ [scsi_tmf_1]
+root        73     2  0 05:43 ?        S<     0:00  \_ [ipv6_addrconf]
+root        86     2  0 05:43 ?        S<     0:00  \_ [deferwq]
+root        87     2  0 05:43 ?        S<     0:00  \_ [charger_manager]
+root        88     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       125     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       126     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       127     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       129     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       130     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       131     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       132     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       133     2  0 05:43 ?        S<     0:00  \_ [kpsmoused]
+root       134     2  0 05:43 ?        S<     0:00  \_ [bioset]
+root       135     2  0 05:43 ?        S<     0:00  \_ [kworker/0:1H]
+root       156     2  0 05:43 ?        S<     0:00  \_ [kworker/1:1H]
+root       158     2  0 05:43 ?        S      0:00  \_ [jbd2/vda1-8]
+root       159     2  0 05:43 ?        S<     0:00  \_ [ext4-rsv-conver]
+root       199     2  0 05:43 ?        S      0:00  \_ [kworker/0:2]
+root       207     2  0 05:43 ?        S      0:00  \_ [kworker/1:2]
+root       219     2  0 05:43 ?        S      0:00  \_ [kauditd]
+root       230     2  0 05:43 ?        S<     0:00  \_ [rpciod]
+root       446     2  0 05:43 ?        S      0:00  \_ [hwrng]
+root       638     2  0 05:43 ?        S<     0:00  \_ [kvm-irqfd-clean]
+root      2738     2  0 05:48 ?        S      0:00  \_ [kworker/u4:1]
+root      3037     2  0 05:50 ?        S      0:00  \_ [kworker/0:0]
+root      4273     2  0 05:54 ?        S      0:00  \_ [kworker/1:1]
+root      4336     2  0 05:54 ?        S      0:00  \_ [kworker/u4:2]
+root      6254     2  0 05:58 ?        S      0:00  \_ [kworker/0:1]
+root      7058     2  0 05:59 ?        S      0:00  \_ [kworker/1:3]
+root         1     0  0 05:43 ?        Ss     0:02 /sbin/init
+root       215     1  0 05:43 ?        Ss     0:00 /lib/systemd/systemd-journald
+root       287     1  0 05:43 ?        Ss     0:00 /lib/systemd/systemd-udevd
+root       424     1  0 05:43 ?        Ssl    0:00 /usr/lib/accountsservice/accounts-daemon
+message+   434     1  0 05:43 ?        Ss     0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+root       444     1  0 05:43 ?        Ssl    0:00 /usr/lib/snapd/snapd
+root       451     1  0 05:43 ?        Ss     0:00 /usr/sbin/cron -f
+syslog     454     1  0 05:43 ?        Ssl    0:00 /usr/sbin/rsyslogd -n
+root       461     1  0 05:43 ?        Ss     0:00 /lib/systemd/systemd-logind
+root       487     1  0 05:43 ?        Ss     0:00 /usr/sbin/irqbalance --pid=/var/run/irqbalance.pid
+root       642     1  0 05:43 ?        Ss     0:00 /sbin/dhclient -1 -v -pf /run/dhclient.ens3.pid -lf /var/lib/dhcp/dhclient.ens3.leases -I -df /var/lib/dhcp/dhclient6.ens3.leases ens3
+root       758     1  0 05:43 ?        Ssl    0:01 /usr/bin/dockerd -H fd://
+root       843   758  0 05:43 ?        Ssl    0:00  \_ docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --shim docker-containerd-shim --runtime docker-runc --debug
+root       774     1  0 05:43 ?        Ssl    0:00 /usr/bin/containerd
+root       781     1  0 05:43 ?        Ss     0:00 /usr/sbin/sshd -D
+root      3314   781  0 05:53 ?        Ss     0:00  \_ sshd: root@pts/0
+root      3325  3314  0 05:53 pts/0    Ss     0:00  |   \_ -bash
+root      4353  3325  0 05:55 pts/0    Sl+    0:00  |       \_ /usr/bin/python3 /usr/bin/asciinema rec k3s.cast
+root      4357  4353  0 05:55 pts/0    S+     0:00  |           \_ /usr/bin/python3 /usr/bin/asciinema rec k3s.cast
+root      4358  4353  0 05:55 pts/1    Ss     0:00  |           \_ sh -c /bin/bash
+root      4359  4358  0 05:55 pts/1    S      0:00  |               \_ /bin/bash
+root      4585  4359  8 05:56 pts/1    Sl     0:22  |                   \_ k3s server
+root      4599  4585  2 05:57 pts/1    Sl     0:07  |                   |   \_ containerd -c /var/lib/rancher/k3s/agent/etc/containerd/config.toml -a /run/k3s/containerd/containerd.sock --state /run/k3s/containerd --root /var/lib/rancher/k3s/agent/containerd
+root      4968  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/d5863f8a78f2124bb72b8b4fc5f8d8bf99ff601afd6923c695e5ac73093d3d61 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5013  4968  0 05:57 ?        Ss     0:00  |                   |       |   \_ /pause
+root      5247  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/92c7c25cff7f19471d07614dbd02ecbad848e1c7b0a2fcbb288e65559e1ac75d -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5266  5247  0 05:57 ?        Ssl    0:00  |                   |       |   \_ /coredns -conf /etc/coredns/Corefile
+root      5552  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/8676a54c94faa5dc59b5ce9393fcb39a57119c08b019944a126f6b86ffa21dd2 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5571  5552  0 05:57 ?        Ss     0:00  |                   |       |   \_ /pause
+root      5729  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/5a517db39e5b324596d484985059dbb606f918e28bb208e56222946483bf0360 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5748  5729  0 05:57 ?        Ss     0:00  |                   |       |   \_ /pause
+root      5837  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/02811d9f5c5aad4ae85fa7318e2cb7b4bfc4ec80456c79d7510deb07531f9095 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5855  5837  0 05:57 ?        Ss     0:00  |                   |       |   \_ /bin/sh /usr/bin/entry
+root      5913  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/2052632a1d79701e6ce3ff727385c71949559c66d1db8cf9a5347bd27c48d082 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      5932  5913  0 05:57 ?        Ss     0:00  |                   |       |   \_ /bin/sh /usr/bin/entry
+root      6014  4599  0 05:57 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/ba3d75beba70a406af8ce6bc9ed01c4a3c683327e0a3d870b74164e71588645b -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      6031  6014  0 05:57 ?        Ssl    0:00  |                   |       |   \_ /traefik --configfile=/config/traefik.toml
+root      6356  4599  0 05:58 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/53e16f58776a84b159c14ae00b8ed8bd918c4bc1c300991ec5391bae4dfc20ef -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      6406  6356  0 05:58 ?        Ss     0:00  |                   |       |   \_ /pause
+root      6357  4599  0 05:58 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/9fde009edc56712345fde8eddcb48976d147393ca2a0d45cb5ca0c2b77627e8c -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      6388  6357  0 05:58 ?        Ss     0:00  |                   |       |   \_ /pause
+root      6497  4599  0 05:58 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/f00347bfc767d84187094108e0f1c4b332abaa9e54fecfedb932bce51fb18e84 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      6515  6497  0 05:58 ?        Ss     0:00  |                   |       |   \_ httpd -DFOREGROUND
+daemon    6566  6515  0 05:58 ?        Sl     0:00  |                   |       |       \_ httpd -DFOREGROUND
+daemon    6567  6515  0 05:58 ?        Sl     0:00  |                   |       |       \_ httpd -DFOREGROUND
+daemon    6568  6515  0 05:58 ?        Sl     0:00  |                   |       |       \_ httpd -DFOREGROUND
+root      6667  4599  0 05:58 pts/1    Sl     0:00  |                   |       \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/ec18853c6fae63111c7a315a953ebbaf11b64634264f183148fd70cea9787730 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/e44f7a46cadac4cec9a759756f2a27fdb25e705a83d8d563207c6a6c5fa368b4/bin/containerd
+root      6686  6667  0 05:58 ?        Ss     0:00  |                   |           \_ httpd -DFOREGROUND
+daemon    6735  6686  0 05:58 ?        Sl     0:00  |                   |               \_ httpd -DFOREGROUND
+daemon    6736  6686  0 05:58 ?        Sl     0:00  |                   |               \_ httpd -DFOREGROUND
+daemon    6737  6686  0 05:58 ?        Sl     0:00  |                   |               \_ httpd -DFOREGROUND
+root      7646  4359  0 06:01 pts/1    R+     0:00  |                   \_ ps -efww f
+root      3358   781  0 05:53 ?        Ss     0:00  \_ sshd: root@notty
+ntp        813     1  0 05:43 ?        Ss     0:00 /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 109:116
+root       823     1  0 05:43 tty1     Ss+    0:00 /sbin/agetty --noclear tty1 linux
+root      3316     1  0 05:53 ?        Ss     0:00 /lib/systemd/systemd --user
+root      3318  3316  0 05:53 ?        S      0:00  \_ (sd-pam)
+$
+$ k3s --version
+k3s version dev (HEAD)
+$ k3s --help
+NAME:
+   k3s - Kubernetes, but small and simple
+
+USAGE:
+   k3s [global options] command [command options] [arguments...]
+
+VERSION:
+   dev (HEAD)
+
+COMMANDS:
+     server   Run management server
+     agent    Run node agent
+     kubectl  Run kubectl
+     crictl   Run crictl
+     help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --debug        Turn on debug logs
+   --help, -h     show help
+   --version, -v  print the version
+$ k get all --all-namespaces
+NAMESPACE     NAME                                READY   STATUS      RESTARTS   AGE
+default       pod/httpd-5d8cbbcd67-bqzxr          1/1     Running     0          3m30s
+default       pod/httpd-5d8cbbcd67-mv2dx          1/1     Running     0          3m30s
+kube-system   pod/coredns-7748f7f6df-tgn9q        1/1     Running     0          4m36s
+kube-system   pod/helm-install-traefik-bk28w      0/1     Completed   0          4m36s
+kube-system   pod/svclb-traefik-d86577785-xs77m   2/2     Running     0          4m6s
+kube-system   pod/traefik-5866c8b546-z7xsh        1/1     Running     0          4m6s
+
+NAMESPACE     NAME                 TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+default       service/kubernetes   ClusterIP      10.43.0.1      <none>        443/TCP                      4m50s
+kube-system   service/kube-dns     ClusterIP      10.43.0.10     <none>        53/UDP,53/TCP,9153/TCP       4m48s
+kube-system   service/traefik      LoadBalancer   10.43.183.53   172.17.0.54   80:31678/TCP,443:30555/TCP   4m6s
+
+NAMESPACE     NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+default       deployment.apps/httpd           2/2     2            2           3m30s
+kube-system   deployment.apps/coredns         1/1     1            1           4m48s
+kube-system   deployment.apps/svclb-traefik   1/1     1            1           4m6s
+kube-system   deployment.apps/traefik         1/1     1            1           4m6s
+
+NAMESPACE     NAME                                      DESIRED   CURRENT   READY   AGE
+default       replicaset.apps/httpd-5d8cbbcd67          2         2         2       3m30s
+kube-system   replicaset.apps/coredns-7748f7f6df        1         1         1       4m36s
+kube-system   replicaset.apps/svclb-traefik-d86577785   1         1         1       4m6s
+kube-system   replicaset.apps/traefik-5866c8b546        1         1         1       4m6s
+
+NAMESPACE     NAME                             COMPLETIONS   DURATION   AGE
+kube-system   job.batch/helm-install-traefik   1/1           31s        4m47s
+$ exit
+exit

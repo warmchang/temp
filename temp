@@ -1,0 +1,37 @@
+curl -LO https://github.com/rancher/k3s/releases/download/v0.2.0/k3s;
+chmod +x k3s; mv k3s /usr/local/bin/
+k3s --version
+k3s --help
+k3s server --help
+k3s agent --help
+k3s server &
+k3s kubectl cluster-info
+k3s kubectl version
+k3s kubectl get node -o wide
+k3s kubectl get pods --all-namespaces
+alias k="k3s kubectl"
+# k create deployment http --image=katacoda/docker-http-server
+k run httpd --image=httpd --replicas=2
+k get pods -o wide
+k get all --all-namespaces
+docker ps
+ps -efww f
+k3s crictl --help
+k3s crictl images
+crictl images
+k3s crictl ps -a
+k3s crictl pods
+k3s crictl stats
+k3s crictl logs ---
+k3s crictl inspectp ---
+k3s crictl info
+ll /etc/rancher/k3s/
+cat /etc/rancher/k3s/k3s.yaml
+ll /run/k3s/containerd/
+ll /var/lib/rancher/k3s/data/
+ll /var/lib/rancher/k3s/agent/
+ll /var/lib/rancher/k3s/server/
+cat /var/lib/rancher/k3s/server/node-token
+cat /var/lib/rancher/k3s/server/cred/kubeconfig-system.yaml
+tree -aAhCf --du /var/lib/rancher/k3s/ >> tree.info
+https://asciinema.org/a/PSK5CB6tFbLzqWscCfeTebWOp?t=25&speed=2&theme=monokai&size=medium

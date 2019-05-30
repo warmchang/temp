@@ -1,0 +1,196 @@
+top - 12:11:24 up  1:04,  2 users,  load average: 0.08, 0.18, 0.21
+Tasks: 136 total,   1 running, 135 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1.8 us,  1.8 sy,  0.0 ni, 91.0 id,  0.2 wa,  0.0 hi,  0.2 si,  5.2 st
+KiB Mem :  2527164 total,    90384 free,   327672 used,  2109108 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.  1978340 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 8460 root      20   0  336488 216824  72056 S   8.3  8.6   3:50.24 /usr/local/bin/k3s server
+ 8476 root      20   0  196900  81588  57748 S   1.0  3.2   0:28.07 containerd -c /var/lib/rancher/k3s/agent/etc/containerd/config.toml -a /run/k3s/containerd/containerd.sock+
+ 9865 root      20   0  171508  47032  37664 S   0.3  1.9   0:06.73 /traefik --configfile=/config/traefik.toml
+  793 root      20   0  350172  39476  24212 S   0.0  1.6   0:00.53 /usr/bin/containerd
+  765 root      20   0  390252  37860  24664 S   0.0  1.5   0:05.66 /usr/bin/dockerd -H fd://
+ 8991 root      20   0  142400  31432  25024 S   0.0  1.2   0:06.80 /coredns -conf /etc/coredns/Corefile
+  480 root      20   0  293904  25316  15660 S   0.0  1.0   0:00.51 /usr/lib/snapd/snapd
+ 2831 root      20   0   30072  12496   3148 S   0.0  0.5   0:00.19 -bash
+ 2640 root      20   0   29880  12100   2940 S   0.0  0.5   0:00.13 -bash
+  849 root      20   0  213416   9644   7024 S   0.0  0.4   0:03.25 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --st+
+ 2629 root      20   0   92800   6852   5920 S   0.0  0.3   0:00.16 sshd: root@pts/0
+ 2826 root      20   0   92800   6772   5840 S   0.0  0.3   0:00.34 sshd: root@pts/1
+11393 root      20   0  107620   6204   5168 S   0.0  0.2   0:00.09 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+ 8832 root      20   0  107620   6144   5168 S   0.0  0.2   0:00.13 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+ 9545 root      20   0  107620   6096   5104 S   0.0  0.2   0:00.09 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+  483 root      20   0  275884   6056   5352 S   0.0  0.2   0:00.27 /usr/lib/accountsservice/accounts-daemon
+  801 root      20   0   65512   6052   5344 S   0.0  0.2   0:00.02 /usr/sbin/sshd -D
+    1 root      20   0   37876   6024   4084 S   0.0  0.2   0:06.43 /sbin/init
+10865 root      20   0  109028   5960   4784 S   0.0  0.2   0:00.11 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+10805 root      20   0  107620   5920   4784 S   0.0  0.2   0:00.14 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+ 9847 root      20   0  107620   5908   5040 S   0.0  0.2   0:00.14 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+ 8974 root      20   0  109028   5896   4784 S   0.0  0.2   0:00.17 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.+
+$
+$ systemctl status k3s.service --no-page --full
+● k3s.service - Lightweight Kubernetes
+   Loaded: loaded (/etc/systemd/system/k3s.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2019-04-01 11:21:51 UTC; 50min ago
+     Docs: https://k3s.io
+  Process: 8456 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/SUCCESS)
+  Process: 8451 ExecStartPre=/sbin/modprobe br_netfilter (code=exited, status=0/SUCCESS)
+ Main PID: 8460 (k3s-server)
+    Tasks: 158
+   Memory: 650.6M
+      CPU: 40.421s
+   CGroup: /system.slice/k3s.service
+           ├─ 8476 containerd -c /var/lib/rancher/k3s/agent/etc/containerd/config.toml -a /run/k3s/containerd/containerd.sock --state /run/k3s/containerd --root /var/lib/rancher/k3s/agent/containerd
+           ├─ 8832 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/9e4513b44d7f3de54019861d4c76cd2b3d92fae7769cc1b2fd2a53b6aafc6ac1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 8974 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/bc262fe199dc79dbf9592fd4060074e96d3603580173b596a6078e6e9cdecaae -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 9545 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/578474cc9f3e77d81ba9beeb15ba74da225230f396d9a6fb838a2dd594a5fa91 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 9574 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/621e5778041251ec324d162365d35314236615cd0cf80a7adeff6ac584a08417 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 9688 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/e586c6f20e8ce8008baa121dc66e62155505989dd9c96f48b65edb978062e7a1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 9756 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/61807439856214659e65ad136b5fef599abfa010aa2bc2cde41fa83f2eebacac -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─ 9847 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/19fbc06ed111fc4b8d1eb5f307a4e38109abcc003eeda165c85c631f9046ec9d -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─10805 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/d697abccf0990a751d09cf72fa0a8041f53f4139d2c5237277628543137fe585 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─10865 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/4b698822b4992c10ba2c0ab9a2240973cd857bfc3e942b507d1d20ebb9e80ba7 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─10925 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/f6e68e9c80e2535c7eaa3da55cadfb65d5561ec9faa7dad2f68de77a19afdfa1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─11052 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/b70c55c92f9c04e58cdc96a14601d3b1c9bcbd45ed6a3e6689923dd23ea83d65 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ├─11220 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/2ca9076982d970b3598ad9e7b0d317b3c250499f3ce4c8fe07cdbc6f5a070705 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           └─11393 containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/cdf21e89fb45c84d3b0444a57add04ea72cb5ce1e0c9f934577eeb7be5eafa46 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+           ‣ 8460 /usr/local/bin/k3s server
+$
+$ ps -efww f
+UID        PID  PPID  C STIME TTY      STAT   TIME CMD
+root         2     0  0 11:06 ?        S      0:00 [kthreadd]
+root         3     2  0 11:06 ?        S      0:00  \_ [ksoftirqd/0]
+root         5     2  0 11:06 ?        S<     0:00  \_ [kworker/0:0H]
+root         7     2  0 11:06 ?        S      0:03  \_ [rcu_sched]
+root         8     2  0 11:06 ?        S      0:00  \_ [rcu_bh]
+root         9     2  0 11:06 ?        S      0:00  \_ [migration/0]
+root        10     2  0 11:06 ?        S      0:00  \_ [watchdog/0]
+root        11     2  0 11:06 ?        S      0:00  \_ [watchdog/1]
+root        12     2  0 11:06 ?        S      0:00  \_ [migration/1]
+root        13     2  0 11:06 ?        S      0:00  \_ [ksoftirqd/1]
+root        15     2  0 11:06 ?        S<     0:00  \_ [kworker/1:0H]
+root        16     2  0 11:06 ?        S      0:00  \_ [kdevtmpfs]
+root        17     2  0 11:06 ?        S<     0:00  \_ [netns]
+root        18     2  0 11:06 ?        S<     0:00  \_ [perf]
+root        19     2  0 11:06 ?        S      0:00  \_ [khungtaskd]
+root        20     2  0 11:06 ?        S<     0:00  \_ [writeback]
+root        21     2  0 11:06 ?        SN     0:00  \_ [ksmd]
+root        22     2  0 11:06 ?        SN     0:00  \_ [khugepaged]
+root        23     2  0 11:06 ?        S<     0:00  \_ [crypto]
+root        24     2  0 11:06 ?        S<     0:00  \_ [kintegrityd]
+root        25     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        26     2  0 11:06 ?        S<     0:00  \_ [kblockd]
+root        27     2  0 11:06 ?        S<     0:00  \_ [ata_sff]
+root        28     2  0 11:06 ?        S<     0:00  \_ [md]
+root        29     2  0 11:06 ?        S<     0:00  \_ [devfreq_wq]
+root        33     2  0 11:06 ?        S      0:00  \_ [kswapd0]
+root        34     2  0 11:06 ?        S<     0:00  \_ [vmstat]
+root        35     2  0 11:06 ?        S      0:00  \_ [fsnotify_mark]
+root        36     2  0 11:06 ?        S      0:00  \_ [ecryptfs-kthrea]
+root        52     2  0 11:06 ?        S<     0:00  \_ [kthrotld]
+root        53     2  0 11:06 ?        S<     0:00  \_ [acpi_thermal_pm]
+root        54     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        55     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        56     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        57     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        58     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        59     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        60     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        61     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        62     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root        63     2  0 11:06 ?        S      0:00  \_ [scsi_eh_0]
+root        64     2  0 11:06 ?        S<     0:00  \_ [scsi_tmf_0]
+root        65     2  0 11:06 ?        S      0:00  \_ [scsi_eh_1]
+root        66     2  0 11:06 ?        S<     0:00  \_ [scsi_tmf_1]
+root        72     2  0 11:06 ?        S<     0:00  \_ [ipv6_addrconf]
+root        85     2  0 11:06 ?        S<     0:00  \_ [deferwq]
+root        86     2  0 11:06 ?        S<     0:00  \_ [charger_manager]
+root        88     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       125     2  0 11:06 ?        S<     0:00  \_ [kpsmoused]
+root       126     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       127     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       128     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       129     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       130     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       131     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       132     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       134     2  0 11:06 ?        S<     0:00  \_ [bioset]
+root       135     2  0 11:06 ?        S<     0:00  \_ [kworker/1:1H]
+root       156     2  0 11:06 ?        S<     0:00  \_ [kworker/0:1H]
+root       158     2  0 11:06 ?        S      0:00  \_ [jbd2/vda1-8]
+root       159     2  0 11:06 ?        S<     0:00  \_ [ext4-rsv-conver]
+root       218     2  0 11:06 ?        S      0:00  \_ [kauditd]
+root       241     2  0 11:06 ?        S<     0:00  \_ [rpciod]
+root       459     2  0 11:06 ?        S      0:00  \_ [hwrng]
+root     15998     2  0 11:45 ?        S      0:00  \_ [kworker/u4:1]
+root     16307     2  0 11:46 ?        S      0:00  \_ [kworker/0:0]
+root     18257     2  0 11:55 ?        S      0:00  \_ [kworker/0:3]
+root     18994     2  0 11:58 ?        S      0:00  \_ [kworker/1:0]
+root     19590     2  0 12:01 ?        S      0:00  \_ [kworker/1:1]
+root     19644     2  0 12:01 ?        S      0:00  \_ [kworker/u4:2]
+root     20549     2  0 12:05 ?        S      0:00  \_ [kworker/0:1]
+root     20970     2  0 12:07 ?        S      0:00  \_ [kworker/1:3]
+root     21046     2  0 12:07 ?        S      0:00  \_ [kworker/u4:0]
+root     21231     2  0 12:08 ?        R      0:00  \_ [kworker/0:2]
+root         1     0  0 11:06 ?        Ss     0:06 /sbin/init
+root       214     1  0 11:06 ?        Ss     0:00 /lib/systemd/systemd-journald
+root       286     1  0 11:06 ?        Ss     0:00 /lib/systemd/systemd-udevd
+root       435     1  0 11:06 ?        Ss     0:00 /usr/sbin/cron -f
+syslog     438     1  0 11:06 ?        Ssl    0:00 /usr/sbin/rsyslogd -n
+root       447     1  0 11:06 ?        Ss     0:00 /lib/systemd/systemd-logind
+message+   452     1  0 11:06 ?        Ss     0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+root       480     1  0 11:06 ?        Ssl    0:00 /usr/lib/snapd/snapd
+root       483     1  0 11:06 ?        Ssl    0:00 /usr/lib/accountsservice/accounts-daemon
+root       508     1  0 11:06 ?        Ss     0:00 /usr/sbin/irqbalance --pid=/var/run/irqbalance.pid
+root       613     1  0 11:06 ?        Ss     0:00 /sbin/dhclient -1 -v -pf /run/dhclient.ens3.pid -lf /var/lib/dhcp/dhclient.ens3.leases -I -df /var/lib/dhcp/dhclient6.ens3.leases ens3
+root       765     1  0 11:06 ?        Ssl    0:05 /usr/bin/dockerd -H fd://
+root       849   765  0 11:06 ?        Ssl    0:03  \_ docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --start-timeout 2m--state-dir /var/run/docker/libcontainerd/containerd --shim docker-containerd-shim --runtime docker-runc --debug
+root       774     1  0 11:06 tty1     Ss+    0:00 /sbin/agetty --noclear tty1 linux
+root       793     1  0 11:06 ?        Ssl    0:00 /usr/bin/containerd
+root       801     1  0 11:06 ?        Ss     0:00 /usr/sbin/sshd -D
+root      2629   801  0 11:12 ?        Ss     0:00  \_ sshd: root@pts/0
+root      2640  2629  0 11:12 pts/0    Ss+    0:00  |   \_ -bash
+root      2826   801  0 11:12 ?        Ss     0:00  \_ sshd: root@pts/1
+root      2831  2826  0 11:12 pts/1    Ss     0:00      \_ -bash
+root     22174  2831  0 12:12 pts/1    R+     0:00          \_ ps -efww f
+ntp        826     1  0 11:06 ?        Ss     0:00 /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 109:116
+root      2631     1  0 11:12 ?        Ss     0:00 /lib/systemd/systemd --user
+root      2633  2631  0 11:12 ?        S      0:00  \_ (sd-pam)
+root      8460     1  7 11:21 ?        Ssl    3:55 /usr/local/bin/k3s server
+root      8476  8460  0 11:21 ?        Sl     0:28  \_ containerd -c /var/lib/rancher/k3s/agent/etc/containerd/config.toml -a /run/k3s/containerd/containerd.sock --state /run/k3s/containerd --root /var/lib/rancher/k3s/agent/containerd
+root      8832  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/9e4513b44d7f3de54019861d4c76cd2b3d92fae7769cc1b2fd2a53b6aafc6ac1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      8862  8832  0 11:22 ?        Ss     0:00      |   \_ /pause
+root      8974  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/bc262fe199dc79dbf9592fd4060074e96d3603580173b596a6078e6e9cdecaae -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      8991  8974  0 11:22 ?        Ssl    0:06      |   \_ /coredns -conf /etc/coredns/Corefile
+root      9545  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/578474cc9f3e77d81ba9beeb15ba74da225230f396d9a6fb838a2dd594a5fa91 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      9563  9545  0 11:22 ?        Ss     0:00      |   \_ /pause
+root      9574  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/621e5778041251ec324d162365d35314236615cd0cf80a7adeff6ac584a08417 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      9602  9574  0 11:22 ?        Ss     0:00      |   \_ /pause
+root      9688  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/e586c6f20e8ce8008baa121dc66e62155505989dd9c96f48b65edb978062e7a1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      9706  9688  0 11:22 ?        Ss     0:00      |   \_ /bin/sh /usr/bin/entry
+root      9756  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/61807439856214659e65ad136b5fef599abfa010aa2bc2cde41fa83f2eebacac -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      9774  9756  0 11:22 ?        Ss     0:00      |   \_ /bin/sh /usr/bin/entry
+root      9847  8476  0 11:22 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/19fbc06ed111fc4b8d1eb5f307a4e38109abcc003eeda165c85c631f9046ec9d -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root      9865  9847  0 11:22 ?        Ssl    0:06      |   \_ /traefik --configfile=/config/traefik.toml
+root     10805  8476  0 11:25 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/d697abccf0990a751d09cf72fa0a8041f53f4139d2c5237277628543137fe585 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     10831 10805  0 11:25 ?        Ss     0:00      |   \_ /pause
+root     10865  8476  0 11:25 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/4b698822b4992c10ba2c0ab9a2240973cd857bfc3e942b507d1d20ebb9e80ba7 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     10884 10865  0 11:25 ?        Ss     0:00      |   \_ /pause
+root     10925  8476  0 11:25 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/f6e68e9c80e2535c7eaa3da55cadfb65d5561ec9faa7dad2f68de77a19afdfa1 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     10943 10925  0 11:25 ?        Ss     0:00      |   \_ /pause
+root     11052  8476  0 11:26 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/b70c55c92f9c04e58cdc96a14601d3b1c9bcbd45ed6a3e6689923dd23ea83d65 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     11070 11052  0 11:26 ?        Ss     0:00      |   \_ httpd -DFOREGROUND
+daemon   11126 11070  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+daemon   11127 11070  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+daemon   11128 11070  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+root     11220  8476  0 11:26 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/2ca9076982d970b3598ad9e7b0d317b3c250499f3ce4c8fe07cdbc6f5a070705 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     11238 11220  0 11:26 ?        Ss     0:00      |   \_ httpd -DFOREGROUND
+daemon   11289 11238  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+daemon   11290 11238  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+daemon   11291 11238  0 11:26 ?        Sl     0:00      |       \_ httpd -DFOREGROUND
+root     11393  8476  0 11:26 ?        Sl     0:00      \_ containerd-shim -namespace k8s.io -workdir /var/lib/rancher/k3s/agent/containerd/io.containerd.runtime.v1.linux/k8s.io/cdf21e89fb45c84d3b0444a57add04ea72cb5ce1e0c9f934577eeb7be5eafa46 -address /run/k3s/containerd/containerd.sock -containerd-binary /var/lib/rancher/k3s/data/56c346dbd23e9399b9ccb062cc8d71110f96eed4cd8d138a7c097e4c651d12a6/bin/containerd
+root     11411 11393  0 11:26 ?        Ss     0:00          \_ httpd -DFOREGROUND
+daemon   11459 11411  0 11:26 ?        Sl     0:00              \_ httpd -DFOREGROUND
+daemon   11460 11411  0 11:26 ?        Sl     0:00              \_ httpd -DFOREGROUND
+daemon   11461 11411  0 11:26 ?        Sl     0:00              \_ httpd -DFOREGROUND
+$
